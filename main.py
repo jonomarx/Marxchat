@@ -1,6 +1,5 @@
 from flask import Flask, request, Response, jsonify
-import time, uuid, sys
-import json
+import time, json
 from bson import ObjectId
 
 # Initialize Mongo
@@ -31,7 +30,7 @@ def squeek_message(username):
         return JSONEncoder().encode(json)
     
     elif request.method == 'GET':
-        return jsonify({'messages': [{'id':uuid.uuid4(), 'from':'dad', 'date':time.time(), 'msg': 'This is a test'}, {'id':uuid.uuid4(), 'from':'dad', 'date':time.time(), 'msg': 'test'}]})  
+        return jsonify({'messages': [{'id':'id', 'from':'dad', 'date':time.time(), 'msg': 'This is a test'}, {'id':'id', 'from':'dad', 'date':time.time(), 'msg': 'test'}]})  
 
 def write(message):
     message['time'] = str(time.time())
