@@ -1,11 +1,19 @@
 from flask import Flask, request, Response, jsonify
 import time, uuid, sys
+import json
+from bson import ObjectId
 
 # Initialize Mongo
 from pymongo import MongoClient
 client = MongoClient('mongodb://localhost:27017/')
 db = client.messageDB
 collection = db.message
+
+class JSONEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, ObjectId):
+            return str(o)
+        return json.JSONEncoder.default(self, o)
 
 # Main 
 app = Flask(__name__)
@@ -18,18 +26,18 @@ def homepage():
 
 def squeek_message(username):
     if request.method == 'POST':
-        write(request.json)
-        return 
-        # return jsonify({'Message ID': 'OK'})
+        json = request.json
+        write(json)
+        return JSONEncoder().encode(json)
     
     elif request.method == 'GET':
         return jsonify({'messages': [{'id':uuid.uuid4(), 'from':'dad', 'date':time.time(), 'msg': 'This is a test'}, {'id':uuid.uuid4(), 'from':'dad', 'date':time.time(), 'msg': 'test'}]})  
 
-def write(post):
-    posts = db.posts
-    post_id = posts.insert_one(post).inserted_id
-    post_id
-    return post_id
+def write(message):
+    message['time'] = str(time.time())
+    messages = db.messages
+    message_id = messages.insert_one(message).inserted_id
+    message_id
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int("80"), debug=True)
