@@ -34,6 +34,7 @@ def squeek_message(username):
         messages = []
         for i in cursor:
             messages.append(i)
+            i["_id"] = str(i["_id"])
         return jsonify({"messages": messages})
     
 def write(message):
