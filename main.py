@@ -34,12 +34,12 @@ def squeek_message(username):
         messages = []
         for i in cursor:
             messages.append(i)
-        return messages
+        return jsonify(messages)
 
 def write(message):
     print(message)
     message = dict(message)
-    mmessage['time'] = str(time.time())
+    message['time'] = str(time.time())
     messages = db.messages
     message_id = messages.insert_one(message).inserted_id
     message_id
