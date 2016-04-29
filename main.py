@@ -38,7 +38,6 @@ def squeek_message(username):
         return jsonify({"messages": messages})
     
 def write(message):
-    print(message)
     message = dict(message)
     message['time'] = str(time.time())
     messages = db.messages
