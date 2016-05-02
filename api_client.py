@@ -7,7 +7,7 @@ def POST(url,data,username=None):
     handler = urllib.request.urlopen( url, data )
     print("you send: ")
     print( handler.read().decode( 'utf-8' ) )
-
+user_name = input("type in a username")
 while True:
     response = input("type get to get messages or type send to send a message.")
     if response == 'get':
