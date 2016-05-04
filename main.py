@@ -4,7 +4,7 @@ from bson import ObjectId
 
 # Initialize Mongo
 from pymongo import MongoClient
-client = MongoClient('mongodb://localhost:27017/')
+client = MongoClient('mongodb://python:py1234@ds056688.mlab.com:56688/messagedb')
 db = client.messageDB
 collection = db.message
 
