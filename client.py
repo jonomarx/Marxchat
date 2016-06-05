@@ -15,7 +15,10 @@ class Window(form_class,QtGui.QMainWindow):
         data = json.loads(data)
         data = data["messages"]
         for i in data:
-            QtGui.QMessageBox.information(self,"Messages",str(i))
+            From = i["from"][0] 
+            msg = i["msg"][0]
+            send_data = "from: %s \n msg: %s" % (From,msg)
+            QtGui.QMessageBox.information(self,"Messages",str(send_data))
     def send_func(self):
         to = self.to.text()
         From = self.From.text()
