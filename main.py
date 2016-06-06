@@ -4,7 +4,7 @@ from bson import ObjectId
 
 # Initialize Mongo
 from pymongo import MongoClient
-client = MongoClient('mongodb://localhost:27017/')
+client = MongoClient('mongodb://python:py1234@ds056688.mlab.com:56688/messagedb')
 db = client.messageDB
 collection = db.message
 
@@ -25,14 +25,20 @@ def homepage():
 
 def squeek_message(username):
     if request.method == 'POST':
-        json = request.json
+        json = request.form
         write(json)
         return JSONEncoder().encode(json)
     
     elif request.method == 'GET':
-        return jsonify({'messages': [{'id':'id', 'from':'dad', 'date':time.time(), 'msg': 'This is a test'}, {'id':'id', 'from':'dad', 'date':time.time(), 'msg': 'test'}]})  
-
+        cursor = db.messages.find({"to": username})
+        messages = []
+        for i in cursor:
+            messages.append(i)
+            i["_id"] = str(i["_id"])
+        return jsonify({"messages": messages})
+    
 def write(message):
+    message = dict(message)
     message['time'] = str(time.time())
     messages = db.messages
     message_id = messages.insert_one(message).inserted_id
