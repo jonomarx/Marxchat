@@ -1,5 +1,5 @@
 from PyQt4 import QtGui, QtCore, uic
-import sys,json
+import sys,json,datetime
 from urllib import request,parse
 
 form_class = uic.loadUiType("client.ui")[0]
@@ -10,6 +10,8 @@ class Window(form_class,QtGui.QMainWindow):
         self.setupUi(self)
         self.get.clicked.connect(self.get_msg_func)
         self.send.clicked.connect(self.send_func)
+        self.set.clicked.connect(self.setDate)
+        self.reset.clicked.connect(self.resetDate)
     def get_msg_func(self):
         data = request.urlopen("http://localhost/message/jon").read().decode()
         data = json.loads(data)
@@ -18,7 +20,6 @@ class Window(form_class,QtGui.QMainWindow):
             From = i["from"][0] 
             msg = i["msg"][0]
             send_data = "from: %s \n msg: %s" % (From,msg)
-            QtGui.QMessageBox.information(self,"Messages",str(send_data))
     def send_func(self):
         to = self.to.text()
         From = self.From.text()
@@ -27,6 +28,13 @@ class Window(form_class,QtGui.QMainWindow):
         data = bytes( parse.urlencode( data ).encode() )
         handler = request.urlopen("http://localhost/message/jon",data)
         print(handler.read().decode())
+    def setDate(self):
+        year = self.year.text()
+        month = self.month.text()
+        day = self.day.text()
+        self.date = datetime.datetime(year,month,day)
+    def resetDate(self):
+        self.date = None
         
 app = QtGui.QApplication(sys.argv)
 

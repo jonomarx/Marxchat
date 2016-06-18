@@ -23,14 +23,16 @@ def homepage():
 
 @app.route('/message/<username>', methods=['GET', 'POST'])
 
-def squeek_message(username):
+def squeek_message(username,time=None):
     if request.method == 'POST':
         json = request.form
         write(json)
         return JSONEncoder().encode(json)
     
     elif request.method == 'GET':
-        cursor = db.messages.find({"to": username})
+        if time == None:
+            time = -9999e+999
+        cursor = db.messages.find({"$and": [{"to": username},{"time":{"$gt": time}}]})
         messages = []
         for i in cursor:
             messages.append(i)
