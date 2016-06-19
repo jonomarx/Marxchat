@@ -20,9 +20,10 @@ class Window(form_class,QtGui.QMainWindow):
             From = i["from"][0] 
             msg = i["msg"][0]
             send_data = "from: %s \n msg: %s" % (From,msg)
+            QtGui.MessageBox.information(self,"Messages",send_data)
     def send_func(self):
         to = self.to.text()
-        From = self.From.text()
+        From = "jon"
         msg = self.msg.text()
         data = {"to": to, "from": From, "msg": msg}
         data = bytes( parse.urlencode( data ).encode() )
@@ -32,7 +33,7 @@ class Window(form_class,QtGui.QMainWindow):
         year = self.year.text()
         month = self.month.text()
         day = self.day.text()
-        self.date = datetime.datetime(year,month,day)
+        self.date = datetime.timestamp(datetime.datetime(year,month,day))
     def resetDate(self):
         self.date = None
         
